@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html >
+<head>
+  <meta charset="UTF-8">
+  <title>VueJS transition and transition-group demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Nunito:200,300,400'>
+  <link rel="stylesheet" href="css/index.css">
+</head>
+
+<body>
+  <main id="app" class="content">
+    <nav class="nav">
+      <menu class="nav__controls">
+        <icon class="nav__icon" use="#filter"></icon>
+
+        <li class="nav__label" :class="(menu === 'country') ? 'nav__label--active' : ''"
+          @click="setMenu('country')">
+          Country
+        </li>
+
+        <li class="nav__label" :class="(menu === 'category') ? 'nav__label--active' : ''"
+          @click="setMenu('category')">
+          Category
+        </li>
+
+        <li class="nav__label" :class="(menu === 'rating') ? 'nav__label--active' : ''"
+          @click="setMenu('rating')">
+          Rating
+        </li>
+      </menu>
+
+      <label class="nav__label" @click="modal = !modal">About this pen</label>
+    </nav>
+
+    <menu v-if="menu === 'country'" class="filters">
+      <li v-for="(active, filter) in countries" class="filters__item"
+        :class="(active) ? 'filters__item--active' : ''"
+        @click="setFilter('countries', filter)">
+        {{ filter }}
+      </li>
+    </menu>
+
+    <menu v-if="menu === 'category'" class="filters">
+      <li v-for="(active, filter) in categories" class="filters__item"
+        :class="(active) ? 'filters__item--active' : ''"
+        @click="setFilter('categories', filter)">
+        {{ filter }}
+      </li>
+    </menu>
+
+    <div v-if="menu === 'rating'" class="rating">
+      <output class="rating__output"><label>Minimum rating:&nbsp;</label>{{ parseFloat(rating).toFixed(1) }}</output>
+      <input v-model="rating" class="rating__input" type="range" min="4" max="9.9" step="0.1"/>
+    </div>
+
+    <transition-group name="company" tag="ul" class="content__list">
+      <li class="company" v-for="company in list" :key="company.id">
+        <div class="company__info">
+          <icon class="company__logo" :style="`fill:${company.color}`" :use="company.logo"></icon>
+          <h2 class="company__name">{{ company.name }}</h2>
+          <blockquote class="company__slogan">{{ company.slogan }}</blockquote>
+        </div>
+
+        <ul class="company__details">
+          <li class="company__data">
+            <label class="company__label">Country</label>
+            <p class="company__country"
+              @click="setFilter('countries', company.country)">
+              {{ company.country }}
+            </p>
+          </li>
+
+          <li class="company__data">
+            <label class="company__label">Rating</label>
+            <p class="company__rating">{{ company.rating.toFixed(1) }}</p>
+          </li>
+        </ul>
+      </li>
+    </transition-group>
+
+    <transition name="modal">
+      <section v-if="modal" class="modal">
+        <article class="modal__content">
+          <h4 class="modal__title">For the full tutorial<br>that goes with this pen</h4>
+          <h5 class="modal__link"><a href="https://snipcart.com/blog/vuejs-transitions-animations" target="_blank">Creating Vue.js Transitions & Animations</a></h5>
+          <button class="modal__close" @click="modal = !modal">&times;</button>
+        </article>
+      </section>
+    </transition>
+  </main>
+
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js'></script>
+  <script  src="js/index.js"></script>
+</body>
+</html>

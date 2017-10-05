@@ -1,0 +1,48 @@
+{
+  "name": "vue-animate-demo",
+  "version": "1.0.0",
+  "description": "A Pen created at CodePen.io. You can find this one at https://codepen.io/udyux/pen/aLVXOg.",
+  "scripts": {
+    "dev": "gulp dev",
+    "build": "gulp build",
+    "watch": "gulp watch",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Spektrum Media <geeks@spektrummedia.com>",
+  "spk-meta": {
+    "uid": "gulp",
+    "hash": "aca6317f4ee62ef60abe872af9872a4653bfb03b",
+    "repository": "https://bitbucket.org/spektrummedia/gulp-template"
+  },
+  "devDependencies": {
+    "autoprefixer": "^7.1.2",
+    "babel-preset-es2015-rollup": "^3.0.0",
+    "browser-sync": "^2.18.13",
+    "chalk": "^2.0.1",
+    "cssnano": "^4.0.0-rc.2",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "gulp": "^3.9.1",
+    "gulp-better-rollup": "^1.1.1",
+    "gulp-eslint": "^4.0.0",
+    "gulp-plumber": "^1.1.0",
+    "gulp-postcss": "^7.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-sass": "^3.1.0",
+    "gulp-sourcemaps": "^2.6.0",
+    "gulp-uglify": "^3.0.0",
+    "log-symbols": "^2.0.0",
+    "node-notifier": "^5.1.2",
+    "rollup-plugin-babel": "^2.7.1",
+    "rollup-plugin-commonjs": "^8.1.0",
+    "rollup-plugin-node-resolve": "^3.0.0"
+  },
+  "private": true,
+  "engines": {
+    "node": ">= 6.0.0",
+    "npm": ">= 3.0.0"
+  }
+}

@@ -1,0 +1,132 @@
+@import 'https://fonts.googleapis.com/css?family=Lato:300,900|Libre+Franklin:100,200,300,600,900|Prompt:100,200,300,600,900';
+
+html {
+  box-sizing: border-box;
+  font-size: 100%;
+  height: 100%;
+  font-family: 'Libre Franklin', sans-serif;
+  
+  &.lato { font-family: 'Lato', sans-serif }
+  &.prompt { font-family: 'Prompt', sans-serif }
+}
+
+body {
+  position: relative;
+  height: 100%;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* reset */
+* {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+  border-radius: 0;
+  border: none;
+  outline: none;
+  background: none;
+  -webkit-margin-before: 0;
+  -webkit-margin-after: 0;
+  -webkit-margin-start: 0;
+  -webkit-margin-end: 0;
+  -webkit-padding-before: 0;
+  -webkit-padding-start: 0;
+  -webkit-padding-end: 0;
+  -webkit-padding-after: 0;
+}
+
+*::before,
+*::after {
+  box-sizing: inherit;
+}
+
+*:active,
+*:hover {
+  outline: 0;
+}
+
+b, i, em, strong,
+h1, h2, h3, h4, h5, h6,
+th, td, pre, ins, del, address,
+input, select, button, textarea {
+  text-transform: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: normal;
+  font-style: normal;
+  letter-spacing: inherit;
+}
+
+textarea,
+input {
+  appearance: none;
+  background-clip: padding-box;
+}
+
+a, ins, del, button {
+  color: inherit;
+  text-decoration: none;
+}
+
+ul, ol,
+menu {
+  list-style: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+pre,
+textarea {
+  overflow: auto;
+  max-width: 100%;
+}
+
+img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+svg:not(:root) {
+  overflow: hidden;
+}
+
+form {
+  width: 100%;
+}
+
+button {
+  cursor: pointer;
+  overflow: visible;
+}
+
+textarea {
+  resize: none;
+}
+
+input[type='range'] {
+  -webkit-appearance: none;
+  background-color: transparent;
+  
+  &::-ms-track {
+    cursor: pointer;
+    background: transparent; 
+    border-color: transparent;
+    color: transparent;
+  }
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+  }
+}
+
+::moz-focus-inner {
+  padding: 0;
+  border: none;
+}
