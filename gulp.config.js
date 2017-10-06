@@ -9,7 +9,7 @@ const config = {
 
   sass: {
 		src: ['./sass/index.scss'],
-		dest: './css',
+		dest: './assets/css',
 		options: { indentedSyntax: false },
 		autoprefixer: {
 			browsers: ['last 2 versions', 'not ie <= 9']
@@ -18,7 +18,7 @@ const config = {
 
 	js: {
 		src: './scripts/*.js',
-		dest: './js',
+		dest: './assets/js',
 		eslint: { fix: true },
 		babel: {
 		  presets: ['es2015-rollup']

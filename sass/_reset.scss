@@ -1,13 +1,7 @@
-@import 'https://fonts.googleapis.com/css?family=Lato:300,900|Libre+Franklin:100,200,300,600,900|Prompt:100,200,300,600,900';
-
 html {
   box-sizing: border-box;
   font-size: 100%;
   height: 100%;
-  font-family: 'Libre Franklin', sans-serif;
-  
-  &.lato { font-family: 'Lato', sans-serif }
-  &.prompt { font-family: 'Prompt', sans-serif }
 }
 
 body {
@@ -113,10 +107,10 @@ textarea {
 input[type='range'] {
   -webkit-appearance: none;
   background-color: transparent;
-  
+
   &::-ms-track {
     cursor: pointer;
-    background: transparent; 
+    background: transparent;
     border-color: transparent;
     color: transparent;
   }

@@ -1,61 +1,84 @@
 new Vue({
   el: '#app',
   components: {
+    'dropdown-item': { template: '#dropdown-item' },
     'icon': { template: '<svg><use :xlink:href="use"/></svg>', props: ['use'] }
   },
 
   data() {
     return {
-      rating: 4,
-      menu: null,
       modal: false,
       companies: [],
-      countries: {},
-      categories: {}
+      dropdown: { height: 0 },
+      rating: { min: 10, max: 0 },
+      filters: { countries: {}, categories: {}, rating: 0 },
+      menus: { countries: false, categories: false, rating: false }
     }
   },
 
   computed: {
+    activeMenu() {
+      return Object.keys(this.menus).reduce(($$, set, i) => (this.menus[set]) ? i : $$, -1)
+    },
+
     list() {
-      let { countries, categories } = this.filters
+      let { countries, categories } = this.activeFilters
 
       return this.companies.filter(({ country, keywords, rating }) => {
-        if (rating < this.rating) return false
+        if (rating < this.filters.rating) return false
         if (countries.length && !~countries.indexOf(country)) return false
         return !categories.length || categories.every(cat => ~keywords.indexOf(cat))
       })
     },
 
-    filters() {
+    activeFilters() {
+      let { countries, categories } = this.filters
+
       return {
-        list: { countries: this.countries, categories: this.categories },
-        countries: Object.keys(this.countries).filter(c => this.countries[c]),
-        categories: Object.keys(this.categories).filter(c => this.categories[c])
+        countries: Object.keys(countries).filter(c => countries[c]),
+        categories: Object.keys(categories).filter(c => categories[c])
       }
     }
   },
 
+  watch: {
+    activeMenu(index, from) {
+      if (index === from) return;
+
+      this.$nextTick(() => {
+        if (!this.$refs.menu || !this.$refs.menu[index]) this.dropdown.height = 0
+        this.dropdown.height = `${this.$refs.menu[index].clientHeight + 16}px`
+      })
+    }
+  },
+
   methods: {
-    setFilter(set, filter) {
-      let active = this[set][filter]
-      this[set][filter] = !active
-      if (set !== 'categories') return;
+    setFilter(set, filter, single) {
+      let active = this.filters[set][filter]
+      this.filters[set][filter] = !active
+      if (!single) return;
 
       setTimeout(() => {
-        Object.keys(this.categories).forEach(category => {
-          this.categories[category] = filter === category && !active
+        Object.keys(this.filters[set]).forEach(option => {
+          this.filters[set][option] = filter === option && !active
         })
       }, 200)
     },
 
-    clearFilter(set) {
-      Object.keys(this[set]).forEach(filter => {
-        this[set][filter] = false
+    clearFilter(single) {
+      let filters = (single) ? [single] : Object.keys(this.filters)
+
+      filters.forEach(set => {
+        Object.keys(this.filters[set]).forEach(filter => {
+          this.filters[set][filter] = false
+        })
       })
     },
 
-    setMenu(menu) {
-      this.menu = (this.menu === menu) ? null : menu
+    setMenu(menu, active) {
+      Object.keys(this.menus).forEach(tab => {
+        this.menus[tab] = !active && tab === menu
+      })
     }
   },
 
@@ -65,11 +88,17 @@ new Vue({
       .then(companies => {
         this.companies = companies
 
-        companies.forEach(({ country, keywords }) => {
-          if (!this.countries.hasOwnProperty(country)) this.$set(this.countries, country, false)
+        companies.forEach(({ country, keywords, rating }) => {
+          this.$set(this.filters.countries, country, false)
+
+          if (this.rating.max < rating) this.rating.max = rating
+          if (this.rating.min > rating) {
+            this.rating.min = rating
+            this.filters.rating = rating
+          }
 
           keywords.forEach(category => {
-            if (!this.categories.hasOwnProperty(category)) this.$set(this.categories, category, false)
+            this.$set(this.filters.categories, category, false)
           })
         })
       })

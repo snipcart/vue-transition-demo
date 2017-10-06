@@ -46,8 +46,8 @@ gulp.task('js', () => {
 				babel(config.js.babel)
 			]
 		}, 'iife'))
-		.pipe(sourcemaps.write())
 		.pipe(uglify())
+		.pipe(sourcemaps.write())
 		.pipe(rename({ dirname: '' }))
 		.pipe(gulp.dest(config.js.dest))
 })

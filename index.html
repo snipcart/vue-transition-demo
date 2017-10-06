@@ -5,7 +5,7 @@
   <title>VueJS transition and transition-group demo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Nunito:200,300,400'>
-  <link rel="stylesheet" href="css/index.css">
+  <link rel="stylesheet" href="/assets/css/index.css">
 </head>
 
 <body>
@@ -14,45 +14,41 @@
       <menu class="nav__controls">
         <icon class="nav__icon" use="#filter"></icon>
 
-        <li class="nav__label" :class="(menu === 'country') ? 'nav__label--active' : ''"
-          @click="setMenu('country')">
-          Country
-        </li>
-
-        <li class="nav__label" :class="(menu === 'category') ? 'nav__label--active' : ''"
-          @click="setMenu('category')">
-          Category
-        </li>
-
-        <li class="nav__label" :class="(menu === 'rating') ? 'nav__label--active' : ''"
-          @click="setMenu('rating')">
-          Rating
+        <li v-for="(active, menu) in menus" class="nav__label"
+          :class="{ 'nav__label--active' : active }"
+          @click="setMenu(menu, active)">
+          {{ menu }}
         </li>
       </menu>
 
       <label class="nav__label" @click="modal = !modal">About this pen</label>
     </nav>
 
-    <menu v-if="menu === 'country'" class="filters">
-      <li v-for="(active, filter) in countries" class="filters__item"
-        :class="(active) ? 'filters__item--active' : ''"
-        @click="setFilter('countries', filter)">
-        {{ filter }}
-      </li>
-    </menu>
+    <section class="dropdown" :style="dropdown">
+      <dropdown-item v-for="(options, set) in filters" :key="set">
+        <menu class="filters" v-show="menus[set]" ref="menu">
+          <template v-if="set === 'rating'">
+            <li class="filters__rating">
+              <output>
+                <label>Minimum rating:&nbsp;</label>
+                {{ parseFloat(filters.rating).toFixed(1) }}
+              </output>
 
-    <menu v-if="menu === 'category'" class="filters">
-      <li v-for="(active, filter) in categories" class="filters__item"
-        :class="(active) ? 'filters__item--active' : ''"
-        @click="setFilter('categories', filter)">
-        {{ filter }}
-      </li>
-    </menu>
+              <input v-model="filters.rating" class="filters__range" type="range"
+                :min="rating.min" :max="rating.max" step="0.1"/>
+            </li>
+          </template>
 
-    <div v-if="menu === 'rating'" class="rating">
-      <output class="rating__output"><label>Minimum rating:&nbsp;</label>{{ parseFloat(rating).toFixed(1) }}</output>
-      <input v-model="rating" class="rating__input" type="range" min="4" max="9.9" step="0.1"/>
-    </div>
+          <template v-else>
+            <li v-for="(active, filter) in options" class="filters__item"
+              :class="{ 'filters__item--active': active }"
+              @click="setFilter(set, filter, set === 'categories')">
+              {{ filter }}
+            </li>
+          </template>
+        </menu>
+      </dropdown-item>
+    </section>
 
     <transition-group name="company" tag="ul" class="content__list">
       <li class="company" v-for="company in list" :key="company.id">
@@ -82,15 +78,29 @@
     <transition name="modal">
       <section v-if="modal" class="modal">
         <article class="modal__content">
-          <h4 class="modal__title">For the full tutorial<br>that goes with this pen</h4>
-          <h5 class="modal__link"><a href="https://snipcart.com/blog/vuejs-transitions-animations" target="_blank">Creating Vue.js Transitions & Animations</a></h5>
+          <h4 class="modal__title">For the full tutorial</h4>
+          <h4 class="modal__title">that goes with this pen</h4>
+
+          <h5 class="modal__link">
+            <a href="https://snipcart.com/blog/vuejs-transitions-animations" target="_blank">
+              Creating Vue.js Transitions &amp; Animations
+            </a>
+          </h5>
+
           <button class="modal__close" @click="modal = !modal">&times;</button>
         </article>
       </section>
     </transition>
   </main>
 
-  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js'></script>
-  <script  src="js/index.js"></script>
+  <script type="text/x-template" id="dropdown-item">
+    <transition name="dropdown" mode="out-in">
+      <slot></slot>
+    </transition>
+  </script>
+
+  <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js'></script> -->
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.js'></script>
+  <script src="/assets/js/index.js"></script>
 </body>
 </html>
