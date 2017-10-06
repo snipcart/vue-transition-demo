@@ -18,37 +18,37 @@
           :class="{ 'nav__label--active' : active }"
           @click="setMenu(menu, active)">
           {{ menu }}
+
+          <span class="nav__clear">&times;</span>
         </li>
       </menu>
 
       <label class="nav__label" @click="modal = !modal">About this pen</label>
     </nav>
 
-    <section class="dropdown" :style="dropdown">
-      <dropdown-item v-for="(options, set) in filters" :key="set">
-        <menu class="filters" v-show="menus[set]" ref="menu">
-          <template v-if="set === 'rating'">
-            <li class="filters__rating">
-              <output>
-                <label>Minimum rating:&nbsp;</label>
-                {{ parseFloat(filters.rating).toFixed(1) }}
-              </output>
+    <transition-group name="dropdown" tag="section" class="dropdown" :style="dropdown">
+      <menu v-for="(options, set) in filters" class="filters"
+        v-show="menus[set]" ref="menu" :key="set">
 
-              <input v-model="filters.rating" class="filters__range" type="range"
-                :min="rating.min" :max="rating.max" step="0.1"/>
-            </li>
-          </template>
+        <li v-if="set === 'rating'" class="filters__rating">
+          <output>
+            <label>Minimum rating:&nbsp;</label>
+            {{ parseFloat(filters.rating).toFixed(1) }}
+          </output>
 
-          <template v-else>
-            <li v-for="(active, filter) in options" class="filters__item"
-              :class="{ 'filters__item--active': active }"
-              @click="setFilter(set, filter, set === 'categories')">
-              {{ filter }}
-            </li>
-          </template>
-        </menu>
-      </dropdown-item>
-    </section>
+          <input v-model="filters.rating" class="filters__range" type="range"
+            :min="rating.min" :max="rating.max" step="0.1"/>
+        </li>
+
+        <template v-else>
+          <li v-for="(active, filter) in options" class="filters__item"
+            :class="{ 'filters__item--active': active }"
+            @click="setFilter(set, filter, set === 'categories')">
+            {{ filter }}
+          </li>
+        </template>
+      </menu>
+    </transition-group>
 
     <transition-group name="company" tag="ul" class="content__list">
       <li class="company" v-for="company in list" :key="company.id">
@@ -92,12 +92,6 @@
       </section>
     </transition>
   </main>
-
-  <script type="text/x-template" id="dropdown-item">
-    <transition name="dropdown" mode="out-in">
-      <slot></slot>
-    </transition>
-  </script>
 
   <!-- <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.min.js'></script> -->
   <script src='https://cdnjs.cloudflare.com/ajax/libs/vue/2.3.4/vue.js'></script>

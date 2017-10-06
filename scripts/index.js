@@ -1,7 +1,6 @@
 new Vue({
   el: '#app',
   components: {
-    'dropdown-item': { template: '#dropdown-item' },
     'icon': { template: '<svg><use :xlink:href="use"/></svg>', props: ['use'] }
   },
 
@@ -47,7 +46,7 @@ new Vue({
 
       this.$nextTick(() => {
         if (!this.$refs.menu || !this.$refs.menu[index]) this.dropdown.height = 0
-        this.dropdown.height = `${this.$refs.menu[index].clientHeight + 16}px`
+        else this.dropdown.height = `${this.$refs.menu[index].clientHeight + 16}px`
       })
     }
   },
@@ -105,7 +104,7 @@ new Vue({
   }
 })
 
-// load svg spritesheet
+// inject svg spritesheet
 fetch('https://s3-us-west-2.amazonaws.com/s.cdpn.io/450744/mock-logos.svg')
   .then(response => response.text()).then(sprite => {
     let figure = document.createElement('figure')
