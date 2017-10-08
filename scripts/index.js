@@ -35,7 +35,8 @@ new Vue({
 
       return {
         countries: Object.keys(countries).filter(c => countries[c]),
-        categories: Object.keys(categories).filter(c => categories[c])
+        categories: Object.keys(categories).filter(c => categories[c]),
+        rating: (this.filters.rating > this.rating.min) ? [this.filters.rating] : []
       }
     }
   },
@@ -45,33 +46,38 @@ new Vue({
       if (index === from) return;
 
       this.$nextTick(() => {
-        if (!this.$refs.menu || !this.$refs.menu[index]) this.dropdown.height = 0
-        else this.dropdown.height = `${this.$refs.menu[index].clientHeight + 16}px`
+        if (!this.$refs.menu || !this.$refs.menu[index]) {
+          this.dropdown.height = 0
+        } else {
+          this.dropdown.height = `${this.$refs.menu[index].clientHeight + 16}px`
+        }
       })
     }
   },
 
   methods: {
-    setFilter(set, filter, single) {
-      let active = this.filters[set][filter]
-      this.filters[set][filter] = !active
-      if (!single) return;
-
-      setTimeout(() => {
-        Object.keys(this.filters[set]).forEach(option => {
-          this.filters[set][option] = filter === option && !active
-        })
-      }, 200)
+    setFilter(filter, option) {
+      if (filter === 'countries') {
+        this.filters[filter][option] = !this.filters[filter][option]
+      } else {
+        setTimeout(() => {
+          this.clearFilter(filter, option, this.filters[filter][option])
+        }, 100)
+      }
     },
 
-    clearFilter(single) {
-      let filters = (single) ? [single] : Object.keys(this.filters)
-
-      filters.forEach(set => {
-        Object.keys(this.filters[set]).forEach(filter => {
-          this.filters[set][filter] = false
+    clearFilter(filter, except, active) {
+      if (filter === 'rating') {
+        this.filters[filter] = this.rating.min
+      } else {
+        Object.keys(this.filters[filter]).forEach(option => {
+          this.filters[filter][option] = except === option && !active
         })
-      })
+      }
+    },
+
+    clearAllFilters() {
+      Object.keys(this.filters).forEach(this.clearFilter)
     },
 
     setMenu(menu, active) {

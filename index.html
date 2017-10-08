@@ -7,7 +7,6 @@
   <link rel='stylesheet prefetch' href='https://fonts.googleapis.com/css?family=Nunito:200,300,400'>
   <link rel="stylesheet" href="/assets/css/index.css">
 </head>
-
 <body>
   <main id="app" class="content">
     <nav class="nav">
@@ -15,22 +14,24 @@
         <icon class="nav__icon" use="#filter"></icon>
 
         <li v-for="(active, menu) in menus" class="nav__label"
-          :class="{ 'nav__label--active' : active }"
-          @click="setMenu(menu, active)">
+          :class="{
+            'nav__label--active' : active,
+            'nav__label--filter': activeFilters[menu].length
+          }" @click="setMenu(menu, active)">
           {{ menu }}
-
-          <span class="nav__clear">&times;</span>
         </li>
+
+        <li class="nav__label nav__label--clear" @click="clearAllFilters">Clear all</li>
       </menu>
 
       <label class="nav__label" @click="modal = !modal">About this pen</label>
     </nav>
 
     <transition-group name="dropdown" tag="section" class="dropdown" :style="dropdown">
-      <menu v-for="(options, set) in filters" class="filters"
-        v-show="menus[set]" ref="menu" :key="set">
+      <menu v-for="(options, filter) in filters" class="filters"
+        v-show="menus[filter]" ref="menu" :key="filter">
 
-        <li v-if="set === 'rating'" class="filters__rating">
+        <li v-if="filter === 'rating'" class="filters__rating">
           <output>
             <label>Minimum rating:&nbsp;</label>
             {{ parseFloat(filters.rating).toFixed(1) }}
@@ -41,10 +42,10 @@
         </li>
 
         <template v-else>
-          <li v-for="(active, filter) in options" class="filters__item"
+          <li v-for="(active, option) in options" class="filters__item"
             :class="{ 'filters__item--active': active }"
-            @click="setFilter(set, filter, set === 'categories')">
-            {{ filter }}
+            @click="setFilter(filter, option)">
+            {{ option }}
           </li>
         </template>
       </menu>
@@ -62,7 +63,7 @@
           <li class="company__data">
             <label class="company__label">Country</label>
             <p class="company__country"
-              @click="setFilter('countries', company.country)">
+              @click="clearFilter('countries', company.country)">
               {{ company.country }}
             </p>
           </li>
@@ -76,12 +77,12 @@
     </transition-group>
 
     <transition name="modal">
-      <section v-if="modal" class="modal">
-        <article class="modal__content">
+      <section v-if="modal" class="modal" @click="modal = !modal">
+        <article class="modal__content" @click.stop>
           <h4 class="modal__title">For the full tutorial</h4>
           <h4 class="modal__title">that goes with this pen</h4>
 
-          <h5 class="modal__link">
+          <h5 class="modal__link" @click="modal = !modal">
             <a href="https://snipcart.com/blog/vuejs-transitions-animations" target="_blank">
               Creating Vue.js Transitions &amp; Animations
             </a>

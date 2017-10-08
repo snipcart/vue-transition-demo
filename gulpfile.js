@@ -17,7 +17,7 @@ const nodeResolve = require('rollup-plugin-node-resolve')
 const utils = require('./gulp.config')
 const config = utils.config
 
-/* sass —————————————————————————————————————————————————————————————————————*/
+// sass
 gulp.task('sass', () => {
 	return gulp.src(config.sass.src)
 		.pipe(plumber(utils.sassReporter))
@@ -33,7 +33,7 @@ gulp.task('sass', () => {
 		.pipe(browserSync.stream({ match: '**/*.css' }))
 })
 
-/* js ———————————————————————————————————————————————————————————————————————*/
+// js
 gulp.task('js', () => {
 	return gulp.src(config.js.src)
 		.pipe(sourcemaps.init())
@@ -52,16 +52,16 @@ gulp.task('js', () => {
 		.pipe(gulp.dest(config.js.dest))
 })
 
-/* builds ———————————————————————————————————————————————————————————————————*/
+// builds
 gulp.task('build', ['sass', 'js'])
 
-/* dev ——————————————————————————————————————————————————————————————————————*/
+// dev
 gulp.task('watch', ['build'], () => {
 	gulp.watch(config.watch.sass, ['sass'])
 	gulp.watch(config.watch.js, ['js'])
 })
 
-/* browser sync —————————————————————————————————————————————————————————————*/
+// browser sync
 gulp.task('dev', ['watch'], () => {
 	browserSync.init(utils.bsConfig)
 	gulp.watch(`${config.js.dest}/*.js`).on('change', browserSync.reload)
