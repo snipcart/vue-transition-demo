@@ -77,18 +77,18 @@
     </transition-group>
 
     <transition name="modal">
-      <section v-if="modal" class="modal" @click="modal = !modal">
+      <section v-if="modal" class="modal" @click="modal = false">
         <article class="modal__content" @click.stop>
           <h4 class="modal__title">For the full tutorial</h4>
           <h4 class="modal__title">that goes with this pen</h4>
 
-          <h5 class="modal__link" @click="modal = !modal">
+          <h5 class="modal__link" @click="modal = false">
             <a href="https://snipcart.com/blog/vuejs-transitions-animations" target="_blank">
               Creating Vue.js Transitions &amp; Animations
             </a>
           </h5>
 
-          <button class="modal__close" @click="modal = !modal">&times;</button>
+          <button class="modal__close" @click="modal = false">&times;</button>
         </article>
       </section>
     </transition>
